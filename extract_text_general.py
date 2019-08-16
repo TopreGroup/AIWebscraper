@@ -59,3 +59,30 @@ imgkit.from_file('test.html', 'test.png')
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 img = Image.open("test.png")
 text = image_to_string(img)
+
+# Specify file name
+filename = "test.txt"
+
+with open(filename, 'w') as f:
+    f.write(text)
+
+# Write text to file
+
+#Read file and store contents in set while preserving order 
+# content = open(filename, 'r', encoding="utf-8")
+# lines = content.readlines()
+# texts = sorted(set(lines), key=lines.index)
+
+# Remove strings whose length is less than or equal to 3 from set
+# for strings in texts:
+#     if len(strings) <= 3:
+#         texts.remove(strings)
+
+# Remove lines which contain only special characters and contain copyright symbol
+# Write filtered out text to file  
+# with open(filename, 'w', encoding="utf-8") as fil:
+#     for line in texts:
+#         if not re.match(r'^[_\W]+$', line):
+#             if not re.match(r'[©®™]', line):
+#                 if not re.match(r'[Copyright © ]', line):
+#                     fil.write(line)
