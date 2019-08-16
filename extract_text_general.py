@@ -22,6 +22,9 @@ soup = BeautifulSoup(content)
 for hidden in soup.body.find_all(style=re.compile(r'display:\s*none')):
     hidden.decompose()
 
+for headless in (li for li in soup.find_all('li') if li.find('a')):
+    headless.decompose()
+
 # Remove elements which generate noise in web page
 [x.extract() for x in soup.find_all('script')]
 [x.extract() for x in soup.find_all('style')]
