@@ -13,13 +13,13 @@ import os
 import time
 
 # Specify business name
-business_name = "Reboot-IT"
+business_name = "WorkVentures"
 
 file_num = 0
 
 # Reading lines from product text file  
 file_lines = []
-with open("reboot-it.txt", "r") as fs:
+with open("workventures.txt", "r") as fs:
     for line in fs:
         currentLine = line.rstrip().split(',')
         file_lines.append(currentLine)
@@ -29,6 +29,7 @@ urls = []
 for fl in file_lines:
     urls.append(fl[0])
 
+# Converting urls list to set
 urls = sorted(set(urls), key=urls.index)
 
 # Loop through all urls
@@ -43,7 +44,7 @@ for url in urls:
         soup = BeautifulSoup(content)
         
         # Remove all hidden elements from html 
-        for hidden in soup.find_all(style=re.compile(r'display:\s*none')):
+        for hidden in soup.body.find_all(style=re.compile(r'display:\s*none')):
             hidden.decompose()
             
         # Remove all list elements containing anchor elements from html
@@ -97,13 +98,6 @@ for url in urls:
         # Remove all comments 
         comments = soup.findAll(text=lambda text: isinstance(text, Comment))
         [comment.extract() for comment in comments]
-    
-        # Remove all elements with content less than or equal to 3 characters from html
-        for tags in soup.findAll():
-            inner_text = tags.text
-            content = inner_text.strip()
-            if len(content) <= 3:
-                tags.extract()
     
         # Remove all elements with content containing copyright symbol from html         
         for tags in soup.findAll():
