@@ -49,7 +49,7 @@ class scrapProduct():
                 if result != -1 :
                     subProdUrl.append(hrefs)
                     subProdTitle.append(itemHead)
-                    # print(hrefs,",",itemHead)  
+                    print(hrefs,",",itemHead)  
         return subProdUrl, subProdTitle
 
 

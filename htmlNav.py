@@ -9,8 +9,10 @@ from urllib.parse import urljoin
 # Catalog links http://www.applebits.net/catalog/index.php
 # Main Page http://www.applebits.net/
 url = 'http://www.applebits.net/catalog/index.php?osCsid=dauds1f61mioio9g33trfhi1d6'
-from CatList import scrapIt as ct
+from CatList import scrapIt as ct 
 from productList import scrapProduct as pl
+from product import product as pd
+import time
 
 
 data= urlopen(url)
@@ -18,10 +20,6 @@ data= urlopen(url)
 pageContent = data.read()
 
 soup= BeautifulSoup(pageContent, "lxml", from_encoding=data.info().get_param('charset'))
-
-# soup = soup.prettify()
-# print(soup)
-
 
 # Find base url 
 base = soup.find("base").get("href")
@@ -90,7 +88,6 @@ for i in range(len(subCatUrl)):
     
     tempProdUrl, tempProdTitle = pl(tempLink).scrapProducts()
     productUrl.extend(tempProdUrl)
-    productTitle.extend(tempProdUrl)
+    productTitle.extend(tempProdTitle)
     
 print(len(productUrl), ",",len(productTitle), "this is product list")
-print(productUrl)
