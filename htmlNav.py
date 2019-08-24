@@ -22,8 +22,8 @@ pageContent = data.read()
 soup= BeautifulSoup(pageContent, "lxml", from_encoding=data.info().get_param('charset'))
 
 # Find base url 
-base = soup.find("base").get("href")
-print(base)
+# base = soup.find("base").get("href")
+# print(base)
 
 # Page title
 # title =soup.select("title")[0]
@@ -90,4 +90,23 @@ for i in range(len(subCatUrl)):
     productUrl.extend(tempProdUrl)
     productTitle.extend(tempProdTitle)
     
-print(len(productUrl), ",",len(productTitle), "this is product list")
+# print(len(productUrl), ",",len(productTitle), "this is product list")
+
+# Create CSV file with heading 
+# row = ['Category', 'Sub Category', 'Product','Description','Price','Product Image','Product Url','Configuration']
+# with open('appleBits.csv', 'a') as csvFile:
+#     writer = csv.writer(csvFile)
+#     writer.writerow(row)
+# csvFile.close()
+
+
+
+for i in range(len(productUrl)):
+        row = pd(productUrl[i]).prodDetail()
+        
+        with open('appleBits.csv', 'a') as csvFile:
+                writer = csv.writer(csvFile)
+                writer.writerow(row)
+        csvFile.close()
+        print("sleep 2s")
+        time.sleep(2)

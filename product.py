@@ -23,12 +23,11 @@ class product():
         productNav = soup.find_all("td",{"class":"headerNavigation"})
         soup= BeautifulSoup(pageContent, "lxml", from_encoding=data.info().get_param('charset'))
    
-        # product image 
-        tempImage = soup.find_all('img', {'src' : re.compile(r'^(?=.*http)(?=.*(png|jpe?g)).*$')})
+        
         # print(image)
-        # image url
-        for i in range(len(tempImage)):
-            imageUrl = tempImage[i].get("src")
+       
+        
+        
         #print(type(temptitle))
             # print("Image URL : ",imageUrl)
   
@@ -72,11 +71,22 @@ class product():
         descripText = descripText.replace("* ", ";")
 
         descripText=re.sub('\s*\n\s*', '', descripText)
+        # product image 
+        tempImage = soup.find_all('img', {'src' : re.compile(r'^(?=.*http)(?=.*(png|jpe?g)).*$')})
+         # image url
+        # imageUrl = ""
+        if len(tempImage) != 0:
+            for i in range(len(tempImage)):
+                imageUrl=tempImage[i].get("src")
+        else:
+            imageUrl = None        
+            
+
         # print(descripText)
         prodDetailList = [Category,catNav,prodName,descripText,price,imageUrl,self.url,None] 
         print(prodDetailList)
         return  prodDetailList  
 
 
-run = product(url3)
-run.prodDetail()
+# run = product(url3)
+# run.prodDetail()
