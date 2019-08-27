@@ -1,51 +1,65 @@
-#invoke libraries
+# Import the necessary modules
 from bs4 import BeautifulSoup as bs
 import bs4
 from bs4.element import Tag
-import codecs
 import nltk
-from nltk import word_tokenize, pos_tag
-from sklearn.model_selection import train_test_split
-# import pycrfsuite
+from nltk import word_tokenize
+from nltk.corpus import stopwords
 import os, os.path, sys
 import glob
 from xml.etree import ElementTree
-import numpy as np
-from sklearn.metrics import classification_report
 
-# this function appends all annotated files
+# This function appends all annotated files
 def append_annotations(files):
     xml_files = glob.glob(files +"/*.xml")
     xml_element_tree = None
     new_data = ""
     for xml_file in xml_files:
-        data = ElementTree.parse(xml_file).getroot()
-        #print ElementTree.tostring(data)        
-        temp = ElementTree.tostring(data)
-        new_data += str(temp)
+        data = ElementTree.parse(xml_file).getroot()        
+        temp = ElementTree.tostring(data, encoding="unicode")
+        new_data += (temp)
     return(new_data)
 
-# files_path = "sample"
-handler = open('./sample/Reboot-IT1.xml', encoding = 'utf-8-sig').read()
+# This function removes special characters and punctuations
+def remov_punct(withpunct):
+    punctuations = '''!()-[]{};:'"\,<>|+./?@#$%^&*_~'''
+    without_punct = ""
+    char = 'nan'
+    for char in withpunct:
+        if char not in punctuations:
+            without_punct = without_punct + char
+    return(without_punct)
 
-# allxmlfiles = append_annotations(files_path)
-soup = bs(handler, "html5lib")
+# Append annotated xml files and create soup object
+files_path = "annotated_files"
+allxmlfiles = append_annotations(files_path)
+soup = bs(allxmlfiles, 'html5lib')
 
+# Define empty tags list 
 tags = []
 
-# Create a list of tokenized words with their respective labels
+# Define all stop words in the english language
+stop_words = set(stopwords.words('english'))
+
+# Tokenize annotated data and append tokens in tags list along with appropriate label
+# Label 0 is assigned if token is not annotated
+# Stopwords are removed regardless of whether tokens are annotated or not
+# Punctuation is removed if tokens are not annotated
 for d in soup.find_all("document"):
-    for wrd in d.contents:
-        NoneType = type(None)
-        if isinstance(wrd.name, NoneType) == True:
-            temp = word_tokenize(wrd)
-            for token in temp:
-                tags.append((token,0))
-        else:
-            temp = word_tokenize(str(wrd))
-            for token in temp:
-                tags.append((token,wrd.name))           
-                
-# Print out tokenized words along with their labels
-for tag in tags:
-    print(tag)
+   for wrd in d.contents:    
+       NoneType = type(None)   
+       if isinstance(wrd.name, NoneType) == True:
+           withoutpunct = remov_punct(wrd)
+           temp = word_tokenize(withoutpunct)
+           for token in temp:
+               if token not in stop_words:
+                   tags.append((token,0))            
+       else:
+           temp = word_tokenize(wrd.text)
+           for token in temp:
+               if token not in stop_words:
+                   tags.append((token,wrd.name))   
+    
+# Write tokenized data along with labels to text file
+with open('tokenized.txt', 'w') as fp:
+    fp.write('\n'.join('%s %s' % tag for tag in tags))
