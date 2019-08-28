@@ -22,7 +22,7 @@ def append_annotations(files):
 
 # This function removes special characters and punctuations
 def remov_punct(withpunct):
-    punctuations = '''!()-[]{};:'"\,<>|+./?@#$%^&*_~'''
+    punctuations = '''!()-[]{};:'"\,<>‘’|+./?@#$%^&*_~'''
     without_punct = ""
     char = 'nan'
     for char in withpunct:
