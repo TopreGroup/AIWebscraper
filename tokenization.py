@@ -16,13 +16,13 @@ def append_annotations(files):
     new_data = ""
     for xml_file in xml_files:
         data = ElementTree.parse(xml_file).getroot()        
-        temp = ElementTree.tostring(data, encoding="unicode")
-        new_data += (temp)
+        temp = ElementTree.tostring(data, encoding='unicode')
+        new_data += temp
     return(new_data)
 
 # This function removes special characters and punctuations
 def remov_punct(withpunct):
-    punctuations = '''!()-[]{};:'"\,<>‘’|+./?@#$%^&*_~'''
+    punctuations = '''!()-[]{};:'"\,<>‘’®©™”|+./?@#$%^&*_~'''
     without_punct = ""
     char = 'nan'
     for char in withpunct:
@@ -31,7 +31,7 @@ def remov_punct(withpunct):
     return(without_punct)
 
 # Append annotated xml files and create soup object
-files_path = "annotated_files"
+files_path = "annotated_data"
 allxmlfiles = append_annotations(files_path)
 soup = bs(allxmlfiles, 'html5lib')
 
@@ -61,5 +61,5 @@ for d in soup.find_all("document"):
                    tags.append((token,wrd.name))   
     
 # Write tokenized data along with labels to text file
-with open('tokenized.txt', 'w') as fp:
+with open('tokenized_data.txt', 'w', encoding='utf-8-sig') as fp:
     fp.write('\n'.join('%s %s' % tag for tag in tags))
