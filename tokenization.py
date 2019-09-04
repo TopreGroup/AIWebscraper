@@ -1,4 +1,4 @@
-# Import the necessary modules
+""" Import the necessary modules """
 from bs4 import BeautifulSoup as bs
 import bs4
 from bs4.element import Tag
@@ -9,7 +9,7 @@ import os, os.path, sys
 import glob
 from xml.etree import ElementTree
 
-# This function appends all annotated files
+""" This function appends all annotated files """
 def append_annotations(files):
     xml_files = glob.glob(files +"/*.xml")
     xml_element_tree = None
@@ -20,7 +20,7 @@ def append_annotations(files):
         new_data += temp
     return(new_data)
 
-# This function removes special characters and punctuations
+""" This function removes special characters and punctuations """
 def remov_punct(withpunct):
     punctuations = '''!()-[]{};:'"\,<>‘’®©™”|+./?@#$%^&*_~'''
     without_punct = ""
@@ -30,21 +30,21 @@ def remov_punct(withpunct):
             without_punct = without_punct + char
     return(without_punct)
 
-# Append annotated xml files and create soup object
+""" Append annotated xml files and create soup object """
 files_path = "annotated_data"
 allxmlfiles = append_annotations(files_path)
 soup = bs(allxmlfiles, 'html5lib')
 
-# Define empty tags list 
+""" Define empty tags list """ 
 tags = []
 
-# Define all stop words in the english language
+""" Define all stop words in the english language """
 stop_words = set(stopwords.words('english'))
 
-# Tokenize annotated data and append tokens in tags list along with appropriate label
-# Label 0 is assigned if token is not annotated
-# Stopwords are removed regardless of whether tokens are annotated or not
-# Punctuation is removed if tokens are not annotated
+""" Tokenize annotated data and append tokens in tags list along with appropriate label """
+""" Label 0 is assigned if token is not annotated """
+""" Stopwords are removed regardless of whether tokens are annotated or not """
+""" Punctuation is removed if tokens are not annotated """
 for d in soup.find_all("document"):
    for wrd in d.contents:    
        NoneType = type(None)   
@@ -60,6 +60,6 @@ for d in soup.find_all("document"):
                if token not in stop_words:
                    tags.append((token,wrd.name))   
     
-# Write tokenized data along with labels to text file
+""" Write tokenized data along with labels to text file """
 with open('tokenized_data.txt', 'w', encoding='utf-8-sig') as fp:
     fp.write('\n'.join('%s %s' % tag for tag in tags))
