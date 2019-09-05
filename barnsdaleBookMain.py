@@ -4,7 +4,7 @@ import requests
 import csv 
 import re
 import os
-# import os.path
+
 from lxml import html
 from urllib.parse import urljoin
 from booksCatlist import booksCat as bkCat
