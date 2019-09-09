@@ -53,12 +53,12 @@ for d in soup.find_all("document"):
            temp = word_tokenize(withoutpunct)
            for token in temp:
                if token not in stop_words:
-                   tags.append((token,'0'))            
+                   tags.append((str(token).upper(),'0'))            
        else:
            temp = word_tokenize(wrd.text)
            for token in temp:
                if token not in stop_words:
-                   tags.append((token,wrd.name))   
+                   tags.append((str(token).upper(),wrd.name))   
     
 """ Write tokenized data along with labels to text file """
 with open('tokenized_data.txt', 'w', encoding='utf-8-sig') as fp:
