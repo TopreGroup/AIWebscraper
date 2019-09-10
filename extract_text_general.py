@@ -175,5 +175,3 @@ for url in urls:
         time.sleep(5)
         print("Was a nice sleep, now let me continue...")
         continue
-
-        
