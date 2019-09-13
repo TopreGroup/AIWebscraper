@@ -12,13 +12,13 @@ import os
 import time
 
 """ Specify business name """
-business_name = "WorkVentures"
+business_name = "BudgetPC_networking"
 
 file_num = 0
 
 """ Reading lines from product text file """  
 file_lines = []
-with open("workventures.txt", "r") as fs:
+with open("budgetPC_networking.txt", "r") as fs:
     for line in fs:
         currentLine = line.rstrip().split(',')
         file_lines.append(currentLine)
@@ -78,7 +78,7 @@ for url in urls:
         [x.decompose() for x in soup.find_all('input')]
         [x.decompose() for x in soup.find_all('button')]
         [x.decompose() for x in soup.find_all('nav')]
-        [x.decompose() for x in soup.find_all('a')]
+        # [x.decompose() for x in soup.find_all('a')]
         [x.decompose() for x in soup.find_all('footer')]
         [x.decompose() for x in soup.find_all('iframe')]
         [x.decompose() for x in soup.find_all('svg')]
@@ -128,26 +128,17 @@ for url in urls:
     
         """ Setting path to directory containing text files """
         cur_path = os.path.dirname(__file__)
-        text_path = os.path.relpath('.\\text_files\\'+business_name+str(file_num)+'.txt', cur_path)
+        text_path = os.path.relpath('.\\budgetPC_networking\\'+business_name+str(file_num)+'.txt', cur_path)
     
-        """ Write resulting soup object to html file """
-        with open(business_name+'.html', 'w', encoding='utf-8-sig') as f:
-            f.write(str(soup))
-    
-        """ Convert html file into image """
-        imgkit.from_file(business_name+'.html', business_name+'.png')
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-        img = Image.open(business_name+'.png')
-    
-        """ Extract text from image """
-        text = image_to_string(img)     
+        """ Extract text from soup object """
+        text = soup.get_text()    
     
         """ Write text to file """
-         with open(text_path, 'w') as f:
-         f.write(text)
+        with open(text_path, 'w', encoding ='utf-8-sig') as f:
+            f.write(text)
         
         """ Read file and store contents in set while preserving order """ 
-        content = open(text_path, 'r')
+        content = open(text_path, 'r', encoding='utf-8-sig')
         lines = content.readlines()
         texts = sorted(set(lines), key=lines.index)
     
@@ -158,16 +149,15 @@ for url in urls:
             
         """ Remove lines which contain only special characters and contain copyright symbol """
         """ Write filtered out text to file """  
-        with open(text_path, 'w') as fil:
+        with open(text_path, 'w', encoding ='utf-8-sig') as fil:
             for line in texts:
                 if not re.match(r'^[_\W]+$', line):
                     if not re.match(r'[©®™]', line):
                         if not re.match(r'[Copyright © ]', line):
                             fil.write(line)
-            os.remove(business_name+'.html')
-            os.remove(business_name+'.png')
+            # os.remove(business_name+'.html')
+            # os.remove(business_name+'.png')
     
-    """ Delaying execution for 5 second in case requests exception occurs """
     except requests.exceptions.ConnectionError:
         print("Connection refused by the server..")
         print("Let me sleep for 5 seconds")
@@ -175,3 +165,6 @@ for url in urls:
         time.sleep(5)
         print("Was a nice sleep, now let me continue...")
         continue
+    
+    except(AttributeError) as e:
+         pass
