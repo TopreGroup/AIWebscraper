@@ -11,9 +11,9 @@ from lxml import html
 
 class budgetProd():
     
-    def __init__(self, levelOne, LevelTwo, url):
-        self.levelOne = levelOne
-        self.LevelTwo = LevelTwo
+    def __init__(self, url):
+        # self.levelOne = levelOne
+        # self.LevelTwo = LevelTwo
         self.url = url
 
 
@@ -26,43 +26,43 @@ class budgetProd():
         try:
 
             # prod nav
-            prodNav = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"breadcrumbs"})]
+            # prodNav = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"breadcrumbs"})]
 
-            prodNav = prodNav[0]
-            prodNav = prodNav.replace("›",";")
+            # prodNav = prodNav[0]
+            # prodNav = prodNav.replace("›",";")
             
-            self.LevelTwo = self.LevelTwo.replace("/",";")
-            prodNav = prodNav.replace(";",self.LevelTwo)
+            # self.LevelTwo = self.LevelTwo.replace("/",";")
+            # prodNav = prodNav.replace(";",self.LevelTwo)
             # print(prodNav)
 
             # image
-            prodImage = prodNav = soup.find_all("div",{"class":"product-image"})
+            # prodImage = soup.find_all("div",{"class":"product-image"})
 
             # print(prodImage)
-            imageHolder = prodImage[0].img
-            imageHolder = imageHolder.get("src")
+            # imageHolder = prodImage[0].img
+            # imageHolder = imageHolder.get("src")
 
-            prodTitle = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"product-name"})]
-            prodTitle = prodTitle[0]
+            # prodTitle = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"product-name"})]
+            # prodTitle = prodTitle[0]
 
             # Price
-            prodPrice = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"price-box"})]
+            # prodPrice = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"price-box"})]
 
-            if "Special Price" in str(prodPrice[0]):
-                prodPrice = str(prodPrice[0]).split("$")[2]
-                prodPrice = "$"+prodPrice
-            else:
-                prodPrice=prodPrice[0]
+            # if "Special Price" in str(prodPrice[0]):
+            #     prodPrice = str(prodPrice[0]).split("$")[2]
+            #     prodPrice = "$"+prodPrice
+            # else:
+            #     prodPrice=prodPrice[0]
 
 
             # Product descript 
             prodDescrip = [s.get_text( strip=True) for s in soup.find_all("div",{"class":"short-description"})]
             prodDescrip = prodDescrip[0]
             
-            prodDetail = [self.levelOne,prodNav,prodDescrip,prodPrice,imageHolder,self.url,None]
+            prodDetail = [self.levelOne,prodNav,prodTitle,prodDescrip,prodPrice,imageHolder,self.url,None]
         except:
             print("sorry link is broken ")   
-            prodDetail = [None,None,None,None,None,None,None]
+            prodDetail = [None,None,None,None,None,None,None,None]
 
         return prodDetail
 
@@ -71,7 +71,7 @@ class budgetProd():
 # Not special price
 # url ="https://www.budgetpc.com.au/catalog/product/view/id/79683/s/rz07-02270100-r3m1-razer-rz07-02270100-r3m1-tartarus-v2-mecha-membrane-gaming-keypad/"
 
-
+# url = "https://www.budgetpc.com.au/na-syc1-black-na-syc1-11cm-4pin-pwm-fan-power-splitter-cables-2-pack.html"
 
 # run = budgetProd(url)
 # run.main()
