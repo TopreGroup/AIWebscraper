@@ -43,22 +43,34 @@ def xpath(urls, prodUrl, title):
         refPath.add(holder)
         print(refPath)
 
+    # Filter xpath list 
+    refPath = list(refPath)
+
+    refPathFilter = []
+    treeHtml = html.fromstring(page.content)
+    for i in range(len(refPath)):
+        holder = str(refPath[i])+'/text()'
+        titleChk = treeHtml.xpath(holder)
+        if not titleChk:
+            continue
+        else:
+            refPathFilter.append(str(refPath[i]))
+
     
     for url in urls:
         flag = 0
         prodUrls = set ()
         pageHolder = requests.get(url, headers= headers)
         treeHtml = html.fromstring(pageHolder.content)
-        refPath = list(refPath)
         
         
 
-        for i in range(len(refPath)):
+        for i in range(len(refPathFilter)):
 
             # if flag != 0:
             #     break
 
-            # xtitle =str(refPath[i])+'/text()'
+            # xtitle =str(refPathFilter[i])+'/text()'
             # element1 = treeHtml.xpath(xtitle)
             # if not element1 or len(element1)==0:
             #     flag +=1
@@ -69,8 +81,8 @@ def xpath(urls, prodUrl, title):
             #     print(xtitle)
                 
             #     element1 = str(element1[0])
-            #     for j in range(len(refPath)):
-            #         ytitle = str(refPath[j])+'/text()'
+            #     for j in range(len(refPathFilter)):
+            #         ytitle = str(refPathFilter[j])+'/text()'
             #         element2 = treeHtml.xpath(ytitle)
                     
             #         if not element1 or len(element1)==0:
@@ -82,11 +94,14 @@ def xpath(urls, prodUrl, title):
             #             break
             #         else:
             #             continue       
-            xtitle =str(refPath[i])+'/text()'
+            xtitle =str(refPathFilter[i])+'/text()'
+            print(xtitle)
             element1 = treeHtml.xpath(xtitle)
-            if not element1 or len(element1)==0:
-                flag +=1
-                break
+            print(element1)
+            if len(element1)==0:
+                if i== len(refPathFilter)-1:
+                    flag +=1
+                    break
             else:
                 continue
 
