@@ -78,7 +78,7 @@ for url in urls:
         [x.decompose() for x in soup.find_all('input')]
         [x.decompose() for x in soup.find_all('button')]
         [x.decompose() for x in soup.find_all('nav')]
-        # [x.decompose() for x in soup.find_all('a')]
+        [x.decompose() for x in soup.find_all('a')]
         [x.decompose() for x in soup.find_all('footer')]
         [x.decompose() for x in soup.find_all('iframe')]
         [x.decompose() for x in soup.find_all('svg')]
