@@ -24,37 +24,6 @@ public class CRFTagging {
 		return (model.classifyToString(input));
 	}
 
-	// public String extractBrand(File file) throws FileNotFoundException {
-	// String brand = "";
-	// boolean brandFound = false;
-	// Scanner sc = new Scanner(file);
-	//
-	// while (sc.hasNextLine()) {
-	// if (brandFound != true) {
-	// String currentLine = sc.nextLine();
-	// if (currentLine.contains("/brand")) {
-	// String[] tags = currentLine.split(" ");
-	// tags = new LinkedHashSet<String>(Arrays.asList(tags)).toArray(new String[0]);
-	// for (int i = 0; i < tags.length; i++) {
-	// if (tags[i].split("/")[1].contains("brand")) {
-	// brand = tags[i].split("/")[0];
-	// brandFound = true;
-	// break;
-	// }
-	// }
-	// }
-	//
-	// }
-	//
-	// else {
-	// break;
-	// }
-	// }
-	//
-	// return brand;
-	// }
-	//
-
 	public String extractEntity(File file, String entityName) throws FileNotFoundException {
 		String entity = "";
 		boolean entityFound = false;
