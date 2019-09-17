@@ -11,29 +11,29 @@ from pytesseract import image_to_string
 import os
 import time
 
-""" Specify business name """
-business_name = "BudgetPC_networking"
+file_name = "extracted_text"
 
-file_num = 0
+file_num = 1
+
+product_urls = []
 
 """ Reading lines from product text file """  
 file_lines = []
-with open("budgetPC_networking.txt", "r") as fs:
+with open("producturl.txt", "r") as fs:
     for line in fs:
         currentLine = line.rstrip().split(',')
         file_lines.append(currentLine)
 
-""" Extracting product urls """
+""" Extracting and storing product urls """
 urls = []
 for fl in file_lines:
     urls.append(fl[0])
 
-""" Converting urls list to set """
+""" Converting product urls list to set """
 urls = sorted(set(urls), key=urls.index)
 
-""" Loop through all urls """
+""" Loop through all product urls """
 for url in urls:
-    file_num = file_num + 1
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
     
     try:
@@ -78,7 +78,7 @@ for url in urls:
         [x.decompose() for x in soup.find_all('input')]
         [x.decompose() for x in soup.find_all('button')]
         [x.decompose() for x in soup.find_all('nav')]
-        [x.decompose() for x in soup.find_all('a')]
+        # [x.decompose() for x in soup.find_all('a')]
         [x.decompose() for x in soup.find_all('footer')]
         [x.decompose() for x in soup.find_all('iframe')]
         [x.decompose() for x in soup.find_all('svg')]
@@ -128,7 +128,7 @@ for url in urls:
     
         """ Setting path to directory containing text files """
         cur_path = os.path.dirname(__file__)
-        text_path = os.path.relpath('.\\budgetPC_networking\\'+business_name+str(file_num)+'.txt', cur_path)
+        text_path = os.path.relpath('.\\extracted_data\\budgetPC_Notebook&Mobile\\'+file_name+str(file_num)+'.txt', cur_path)
     
         """ Extract text from soup object """
         text = soup.get_text()    
@@ -155,9 +155,12 @@ for url in urls:
                     if not re.match(r'[©®™]', line):
                         if not re.match(r'[Copyright © ]', line):
                             fil.write(line)
-            # os.remove(business_name+'.html')
-            # os.remove(business_name+'.png')
-    
+        
+        """ Store working product urls in product_urls list """
+        product_urls.append(url)
+
+        file_num = file_num + 1    
+
     except requests.exceptions.ConnectionError:
         print("Connection refused by the server..")
         print("Let me sleep for 5 seconds")
@@ -168,3 +171,13 @@ for url in urls:
     
     except(AttributeError) as e:
          pass
+
+""" Write working product urls to a text file """ 
+count = 0
+with open('./working_product_urls/working_product_urls.txt', 'w') as fp:
+    for url in product_urls:
+        count = count + 1
+        if(count != len(product_urls)):
+            fp.write(url+",\n")
+        else:
+            fp.write(url)
