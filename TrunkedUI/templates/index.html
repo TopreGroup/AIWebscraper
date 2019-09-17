@@ -1,0 +1,80 @@
+<html>
+
+<head>
+  <title>AI Web Scraper</title>
+  <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+  <div class="container"><br>
+    <center>
+      <img src="https://www.trunked.com.au/wp-content/uploads/2019/04/Trunked-Logo-78.png" alt="TrunkedLogo"
+        style="display: block;margin-left: auto;margin-right: auto;width: 50%;">
+    </center>
+  </div>
+
+  <div class="container"><br>
+    <div class="row align-items-center justify-content-center">
+      <div style="width:100%">
+        <form action="javascript:sub();" id="form1">
+
+          <div class="form-group">
+            <label for="name">Enter keyword:</label>
+            <input type="text" class="form-control" placeholder="Keyword">
+            <br>
+            <div id="div1" style="overflow: auto; height:200px;background-color: aliceblue; resize: both;">
+              <div style='background-color: aliceblue;border-radius: 7px;' class='getall'> Enter business name: <input
+                  type='text' class='form-control' placeholder='Business name' id="bn0" required> Enter URL <input
+                  type='text' class='form-control' placeholder='URL' id="url0" required> </div>
+
+            </div>
+            <div style="background-color: aliceblue;border-radius: 7px;">
+              <br>
+              <input type="button" class="btn btn-success" style="float:right" onclick="addfield()" value="Add">
+              <br>
+              <br>
+            </div>
+          </div>
+          <br>
+          <center>
+            <button type="submit" class="btn btn-success" onclick="sub()"> Submit</button>
+          </center>
+        </form>
+        <br>
+      </div>
+      <br>
+    </div>
+  </div>
+  <script>
+    var count = 0;
+
+    function addfield() {
+      count = count + 1
+      var newDiv =
+        "<div style='background-color: aliceblue;border-radius: 7px;' class='getall' id='newdiv" + count +
+        "'><br> Enter business name: <input type='text' class='form-control' placeholder='Business name' id='bn" +
+        count + "' required> Enter URL <input type='text' class='form-control' placeholder='URL' id='url" + count +
+        "' required><input type='button' class='btn btn-success' value='delete' onclick='deldiv(" + count + ")'><br></div>"
+      let doc = new DOMParser().parseFromString(newDiv, "text/html");
+      document.getElementById("div1").appendChild(doc.documentElement.getElementsByTagName("div")[0]);
+    }
+
+    function deldiv(divnum) {
+
+      document.getElementById("newdiv" + divnum).outerHTML = "";
+
+    }
+
+    function sub() {
+
+      if (document.getElementById("form1").checkValidity()) {
+        console.log(document.getElementsByClassName("getall"));
+      }
+    }
+  </script>
+</body>
+
+</html>
