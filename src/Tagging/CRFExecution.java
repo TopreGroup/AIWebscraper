@@ -29,7 +29,7 @@ public class CRFExecution {
 		List<String> taggedStrings = new ArrayList<String>();
 
 		// Retrieving unseen text files from path specified
-		String path = "./Sample";
+		String path = "./extracted_data";
 		File folder = new File(path);
 		File[] listFiles = folder.listFiles();
 
@@ -56,13 +56,13 @@ public class CRFExecution {
 
 		// Writing tagged text to text files
 		for (int i = 0; i < listFiles.length; i++) {
-			PrintWriter writer = new PrintWriter("./SampleTagged/taggedfile" + (int) (i + 1) + ".txt");
+			PrintWriter writer = new PrintWriter("./tagged_data/tagged_text" + (int) (i + 1) + ".txt");
 			writer.print(taggedStrings.get(i));
 			writer.close();
 		}
 
 		// Retrieving tagged text files from path specified
-		String taggedPath = "./SampleTagged";
+		String taggedPath = "./tagged_data";
 		File taggedFolder = new File(taggedPath);
 		File[] taggedFiles = taggedFolder.listFiles();
 
@@ -73,7 +73,8 @@ public class CRFExecution {
 			String model = crftag.extractEntity(taggedFiles[i], "model");
 			String availability = crftag.extractEntity(taggedFiles[i], "availability");
 			String price = crftag.extractEntity(taggedFiles[i], "price").replace(" ", "");
-			crfstore.storeEntity(i + 1, brand, model, price, availability);
+			String condition = crftag.extractEntity(taggedFiles[i], "condition");
+			crfstore.storeEntity(i + 1, brand, model, price, availability, condition);
 
 		}
 
