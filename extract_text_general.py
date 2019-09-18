@@ -128,7 +128,7 @@ for url in urls:
     
         """ Setting path to directory containing text files """
         cur_path = os.path.dirname(__file__)
-        text_path = os.path.relpath('.\\extracted_data\\budgetPC_Notebook&Mobile\\'+file_name+str(file_num)+'.txt', cur_path)
+        text_path = os.path.relpath('.\\extracted_data\\'+file_name+str(file_num)+'.txt', cur_path)
     
         """ Extract text from soup object """
         text = soup.get_text()    
