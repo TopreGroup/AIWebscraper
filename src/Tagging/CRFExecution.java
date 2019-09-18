@@ -74,7 +74,8 @@ public class CRFExecution {
 			String availability = crftag.extractEntity(taggedFiles[i], "availability");
 			String price = crftag.extractEntity(taggedFiles[i], "price").replace(" ", "");
 			String condition = crftag.extractEntity(taggedFiles[i], "condition");
-			crfstore.storeEntity(i + 1, brand, model, price, availability, condition);
+			String category = crftag.extractEntity(taggedFiles[i], "category");
+			crfstore.storeEntity(i + 1, brand, model, price, availability, condition, category);
 
 		}
 
