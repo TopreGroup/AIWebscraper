@@ -56,11 +56,40 @@ public class CRFTagging {
 			}
 
 		}
+		
+		// Code to extract category
+		// Parses tagged file line by line and checks if current line contains string tagged as category
+		// If string is tagged as category, it is stored in entity variable and returned
+		else if (entityName == "category") {
+			while (sc.hasNextLine()) {
+				if (entityFound != true) {
+					String currentLine = sc.nextLine();
+					if (currentLine.contains("/category")) {
+						String[] tags = currentLine.split(" ");
+						tags = new LinkedHashSet<String>(Arrays.asList(tags)).toArray(new String[0]);
+						for (int i = 0; i < tags.length; i++) {
+							if (tags[i].split("/")[1].contains("category")) {
+								entity = tags[i].split("/")[0];
+								entityFound = true;
+								break;
+							}
+						}
+					}
+
+				}
+
+				else {
+					break;
+				}
+			}
+
+		}
+ 
 
 		// Code to extract named entities other than brand
 		// Parses tagged file line by line and checks if current line contains strings tagged as the named entity to be extracted
 		// If string is tagged as the named entity to be extracted, it is stored in entity variable and returned
-		// If multiple strings in the line are tagged as the named entity to be extracted, they are concatenated, storeed in the entity variable and returned
+		// If multiple strings in the line are tagged as the named entity to be extracted, they are concatenated, stored in the entity variable and returned
 		else {
 			while (sc.hasNextLine()) {
 				if (entityFound != true) {
