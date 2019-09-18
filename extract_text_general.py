@@ -19,7 +19,7 @@ product_urls = []
 
 """ Reading lines from product text file """  
 file_lines = []
-with open("producturl.txt", "r") as fs:
+with open("./product_urls/producturl.txt", "r") as fs:
     for line in fs:
         currentLine = line.rstrip().split(',')
         file_lines.append(currentLine)
@@ -78,7 +78,7 @@ for url in urls:
         [x.decompose() for x in soup.find_all('input')]
         [x.decompose() for x in soup.find_all('button')]
         [x.decompose() for x in soup.find_all('nav')]
-        # [x.decompose() for x in soup.find_all('a')]
+        [x.decompose() for x in soup.find_all('a')]
         [x.decompose() for x in soup.find_all('footer')]
         [x.decompose() for x in soup.find_all('iframe')]
         [x.decompose() for x in soup.find_all('svg')]
