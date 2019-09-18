@@ -12,7 +12,7 @@ import java.sql.Statement;
 public class CRFStorage {
 	
 	// Method to store extracted named entities in database
-	public void storeEntity(int id, String brand, String model, String price, String availability, String condition) {
+	public void storeEntity(int id, String brand, String model, String price, String availability, String condition, String category) {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -27,15 +27,15 @@ public class CRFStorage {
 			conn.setAutoCommit(false);
 		
 			// Inserting extracted named entities into entities table of database
-			
-			String sql = "UPDATE ENTITIES SET brand = ?, model = ?, price = ?, stock = ?, condition = ? WHERE entity_id = ?;";
+			String sql = "UPDATE ENTITIES SET brand = ?, model = ?, price = ?, stock = ?, condition = ?, category = ? WHERE entity_id = ?;";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, brand);
 			stmt.setString(2, model);
 			stmt.setString(3, price);
 			stmt.setString(4, availability);
 			stmt.setString(5, condition);
-			stmt.setInt(6, id);
+			stmt.setString(6, category);
+			stmt.setInt(7, id);
 			stmt.executeUpdate();
 			stmt.close();
 
