@@ -24,7 +24,7 @@ def trance():
                     parsed_uri = urlparse(uiobj["burl"])
                     bdomain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
                     id.flowStart(uiobj["bname"], uiobj["burl"], uiobj["btitle"], bdomain)
-                    conn = pyodbc.connect('Driver={SQL Server};''Server=JYOTI-PRASH-PC\SQLEXPRESS;''Database=trunked;''UID=jyoti-prash;''PWD=ac0n3x;''Trusted_Connection=yes;')
+                    conn = pyodbc.connect('Driver={SQL Server};''Server=DESKTOP-1P8QTPD;''Database=CRFTest;''UID=Sanchit12;''PWD=GSWarrior02;''Trusted_Connection=yes;')
                     cur = conn.cursor()
                     postgres_insert_query = """SET ANSI_WARNINGS OFF; INSERT INTO BUSINESSES (business_name, business_url) \
                     VALUES (?, ?); SET ANSI_WARNINGS ON; """
