@@ -101,6 +101,3 @@ def xpath(name, prodUrl, title, bname):
 
     except:
         print("txt file not found")
-
-extract_text_general.extract_text_general()
-store_productURL.storeProdURL(bname)
