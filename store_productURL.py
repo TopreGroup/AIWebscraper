@@ -42,7 +42,7 @@ def storeProdURL(name):
 	for url in urls:
 		id = id + 1
 		postgres_insert_query = """SET ANSI_WARNINGS OFF; INSERT INTO ENTITIES (entity_id, brand, model, price, stock, producturl, condition, business_id, category) \
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?); SET ANSI_WARNINGS ON; """
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?); SET ANSI_WARNINGS ON; """
 		record_to_insert = (str(id), '', '', '', '', url, '', business_id, '')
 		cur.execute(postgres_insert_query, record_to_insert)
 		conn.commit()
