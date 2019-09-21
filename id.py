@@ -69,4 +69,3 @@ def flowStart(bname, burl, btitle, bdomain):
         if re.match('^http', val):
             f.write(val + "\n")
     f.close()
-    xpathChk.xpath(allurlfilename, burl, btitle)
