@@ -55,17 +55,18 @@ def find_internal_urls(def_url, urlchk, depth=0, max_depth=3):
 def flowStart(bname, burl, btitle, bdomain):
     urlSet = set()
     depth = 3
-    all_page_urls = find_internal_urls(bdomain, bdomain, 0, 3)
+    all_page_urls = find_internal_urls(bdomain, bdomain, 3, 3)
     if depth > 1:
         for status_dict in all_page_urls:
             tempSet = find_internal_urls(status_dict, bdomain)
             for temUrl in tempSet:
                 urlSet.add(temUrl)
-    filename = bname
-    f = open(filename+".txt", "a")
+
+    allurlfilename = "allurls"
+    f = open(allurlfilename+".txt", "a")
     for val in urlSet:
         substr = unquote(val)
         if re.match('^http', val):
             f.write(val + "\n")
     f.close()
-    xpathChk.xpath(bname, burl, btitle)
+    xpathChk.xpath(allurlfilename, burl, btitle)

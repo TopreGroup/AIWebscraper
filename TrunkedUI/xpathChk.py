@@ -89,7 +89,7 @@ def xpath(name, prodUrl, title):
 
                     if flag == 0:
                         row = str(url)
-                        file1 = open(name+"ProdUrl.txt", "a")
+                        file1 = open(name+"produrls.txt", "a")
                         file1.write(row + ",\n")
                         file1.close()
                     else:
