@@ -21,7 +21,7 @@ def storeProdURL(name):
 
 	""" Reading lines from working product urls text file """  
 	file_lines = []
-	with open("./working_product_urls/working_product_urls.txt", "r") as fs:
+	with open("working_product_urls.txt", "r") as fs:
 		for line in fs:
 			currentLine = line.rstrip().split(',')
 			file_lines.append(currentLine)
@@ -35,7 +35,7 @@ def storeProdURL(name):
 	urls = sorted(set(urls), key=urls.index)
 
 	""" Retrieve business id for the inputted business name """
-	cur.execute("SELECT business_id from BUSINESSES WHERE CONVERT(varchar, business_name) = '"+ business_name + "';")
+	cur.execute("SELECT business_id from BUSINESSES WHERE CONVERT(varchar, business_name) = ?", business_name)
 	business_id = cur.fetchone()[0]
 
 	""" Loop through all working product urls and store them in the database """
