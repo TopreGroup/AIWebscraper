@@ -19,7 +19,7 @@ product_urls = []
 
 """ Reading lines from product text file """  
 file_lines = []
-with open("./product_urls/producturl.txt", "r") as fs:
+with open("producturl.txt", "r") as fs:
     for line in fs:
         currentLine = line.rstrip().split(',')
         file_lines.append(currentLine)
