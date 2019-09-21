@@ -1,0 +1,234 @@
+<html>
+
+<head>
+  <title>AI Web Scraper</title>
+  <link rel="stylesheet" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body class="block">
+  <button type="button"  data-toggle="modal" data-target="#myModaldel" style="display: none;" id="opendel"></button>
+  <div class="modal fade" id={{myModaldel}} role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Notification</h4>
+        </div>
+        <div class="modal-body">
+          <p>Book Deleted</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" onclick="openModal('myModaldel')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>
+
+      @keyframes color-animation {
+        100% {
+           background: #b5ffb5;
+        }
+        50% {
+           background: #e6beff;
+        }
+        0% {
+           background: rgb(177, 228, 255)
+        }
+     }
+    .block {
+        width: 100%;
+        height: 100%;
+        animation: color-animation 23s infinite linear alternate;
+     } 
+    
+  </style>
+
+  <div class="container"><br>
+    <center>
+      <img src="https://www.trunked.com.au/wp-content/uploads/2019/04/Trunked-Logo-78.png" alt="TrunkedLogo"
+        style="display: block;margin-left: auto;margin-right: auto;width: 50%;">
+    </center>
+  </div>
+
+  <table style="width:100%">
+    <tr>
+      <th>
+         
+      </th>
+      <th>
+        <div class="container"><br>
+          <div class="row align-items-center justify-content-center">
+            <div style="width:100%">
+              <form action="javascript:sub();" id="form1">
+      
+                <div class="form-group">
+                  <div id="div1" style="overflow: auto;height:200px;background-color: aliceblue;resize: both;border-radius: 5px;">
+                    <div style='background-color: aliceblue;border-radius: 7px; margin-top: 5px;' class='getall'> Enter business name: <input
+                        type='text' name = "bname" class='form-control' placeholder='Business name' required autofocus> Enter sample product URL <input
+                        type='url' name = "burl" class='form-control' placeholder='URL' required> 
+                        Enter sample product Title <input
+                        type='text' name = "btitle" class='form-control' placeholder='Title' required>
+                      </div>
+      
+                  </div>
+                </div>
+                <div>
+                  <br>
+                  <input type="button" class="btn btn-success" onclick="addfield()" value="Add" style="float: right;">
+                  <br>
+                  <br>
+                </div>
+                <br>
+                <center>
+                  <button type="submit" class="btn btn-success"> Submit</button>
+                </center>
+              </form>
+              <br>
+            </div>
+            <br>
+          </div>
+        </div> 
+      </th> 
+  </table>
+
+  <script>
+
+    function addfield() {
+if(document.getElementsByName("bname")[document.getElementsByName("bname").length-1].value=="")
+{
+
+  alert("Please complete the available form before adding a new one.");
+  document.getElementsByName("bname")[document.getElementsByName("bname").length-1].focus();
+
+}
+else if(document.getElementsByName("burl")[document.getElementsByName("burl").length-1].value=="")
+{
+
+  alert("Please complete the available form before adding a new one.");
+  document.getElementsByName("burl")[document.getElementsByName("burl").length-1].focus();
+
+}
+else if(document.getElementsByName("btitle")[document.getElementsByName("btitle").length-1].value=="")
+{
+
+  alert("Please complete the available form before adding a new one.");
+  document.getElementsByName("btitle")[document.getElementsByName("btitle").length-1].focus();
+
+}else {
+      var newDiv =
+        "<div style='background-color: aliceblue;border-radius: 7px;' class='getall'>"+
+          "<br> Enter business name: <input type='text' name = 'bname' class='form-control' placeholder='Business name' required>"+
+          " Enter sample product URL <input type='text' name = 'burl' class='form-control' placeholder='URL' required>"+
+          " Enter sample product Title <input type='text' name = 'btitle' class='form-control' placeholder='Title' required>"+
+          " <input type='button' name='delb' class='btn btn-success' value='delete' onclick='deldiv(this)'><br></div>"
+      let doc = new DOMParser().parseFromString(newDiv, "text/html");
+      document.getElementById("div1").appendChild(doc.documentElement.getElementsByTagName("div")[0]);
+      document.getElementsByName("bname")[document.getElementsByName("bname").length-1].focus();
+        }
+    }
+
+    function deldiv(delbutton) {
+
+      delbutton.parentElement.outerHTML = "";
+  
+  }
+  
+  function sub() {
+  
+      if (document.getElementById("form1").checkValidity()) {
+  
+          var getall = document.getElementsByClassName("getall");
+          if (getall.length>0) {
+  
+              allbus = [];
+  
+              for (var i = 0; i <= getall.length - 1; i++) {
+  
+                  inputs = getall[i].children;
+  
+                  var buslist = {};
+  
+                  for (var j = 0; j < inputs.length; j++) {
+  
+                      if (inputs[j].tagName == "INPUT" && inputs[j].type == "text" || inputs[j].type == "url") {
+  
+                          buslist[inputs[j].name] = inputs[j].value;
+  
+                      }
+  
+                  }
+                  allbus.push(buslist)
+              }
+          }
+  
+          if (allbus) {
+              var xhr = new XMLHttpRequest();
+              xhr.open("POST", window.location.href, true);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+              xhr.send(JSON.stringify(allbus));
+  
+              var count = 0;
+  
+              if (document.getElementsByName("delb").length > 0) {
+                  count = 1
+              }
+  
+              while (count == 1) {
+  
+                  document.getElementsByName("delb")[0].click();
+  
+                  if (document.getElementsByName("delb").length > 0) {
+                      count = 1
+                  } else {
+  
+                      count = 0;
+  
+                  }
+  
+              }
+  
+  
+  
+              getall = document.getElementsByClassName("getall");
+  
+              if (getall.length>0) {
+  
+                  for (var i = 0; i <= getall.length - 1; i++) {
+  
+                      inputs = getall[i].children;
+  
+                      var buslist = {};
+  
+                      for (var j = 0; j < inputs.length; j++) {
+  
+                          if (inputs[j].tagName == "INPUT" && inputs[j].type == "text" || inputs[j].type == "url") {
+  
+                              inputs[j].value = "";
+  
+                          }
+  
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+var openModal = function (name) {
+    if (name != "") {
+        document.getElementById(name).id = "{{"+name+"}}";
+    }
+}
+
+window.onload = function () {
+
+    if (document.getElementById("myModaldel")) {
+        document.getElementById("opendel").click()
+    }
+};
+  </script>
+</body>
+
+</html>
