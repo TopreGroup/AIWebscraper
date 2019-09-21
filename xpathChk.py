@@ -8,12 +8,10 @@ import requests
 import re
 import os
 import time
-# from goose3 import Goose
 
 
 def xpath(name, prodUrl, title):
     """Read url from txt and filters out Product Urls only
-
     Arguments:
         name {String} -- company name
         prodUrl {String} -- sample product url
@@ -36,9 +34,6 @@ def xpath(name, prodUrl, title):
             if pattern.match(line):
                 holder = line
                 urls.add(line)
-                # print(line)
-            # else :
-            #     print(line)
         file1.close()
 
         """# Xpath extracting from produrl and title.Using sets to avoid duplicate"""
@@ -54,7 +49,6 @@ def xpath(name, prodUrl, title):
         for r in result:
             holder = tree.getpath(r)
             refPath.add(holder)
-            # print(refPath)
 
         """typcasting set to list"""
         refPath = list(refPath)
@@ -84,9 +78,7 @@ def xpath(name, prodUrl, title):
 
                     for i in range(len(refPathFilter)):
                         xtitle = str(refPathFilter[i])+'/text()'
-                        # print(xtitle)
                         element1 = treeHtml.xpath(xtitle)
-                        # print(element1)
                         if len(element1) == 0:
                             if i == len(refPathFilter)-1:
                                 flag += 1
@@ -97,7 +89,7 @@ def xpath(name, prodUrl, title):
 
                     if flag == 0:
                         row = str(url)
-                        file1 = open(name+"ProdUrl.txt", "a")
+                        file1 = open(name+"produrls.txt", "a")
                         file1.write(row + ",\n")
                         file1.close()
                     else:
