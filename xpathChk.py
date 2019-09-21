@@ -8,12 +8,14 @@ import requests
 import re
 import os
 import time
+import extract_text_general
+import store_productURL
 
 
-def xpath(name, prodUrl, title):
+def xpath(name, prodUrl, title, bname):
     """Read url from txt and filters out Product Urls only
     Arguments:
-        name {String} -- company name
+        name {String} -- file name
         prodUrl {String} -- sample product url
         title {String} -- product title found on prod url
     """
@@ -89,7 +91,7 @@ def xpath(name, prodUrl, title):
 
                     if flag == 0:
                         row = str(url)
-                        file1 = open(name+"produrls.txt", "a")
+                        file1 = open("producturl.txt", "a")
                         file1.write(row + ",\n")
                         file1.close()
                     else:
@@ -99,3 +101,6 @@ def xpath(name, prodUrl, title):
 
     except:
         print("txt file not found")
+
+extract_text_general.extract_text_general()
+store_productURL.storeProdURL(bname)
