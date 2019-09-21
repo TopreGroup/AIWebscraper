@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from urllib.parse import unquote
 import re
-import xpathextract
+import xpathChk
 
 
 def get_soup(link):
@@ -68,4 +68,4 @@ def flowStart(bname, burl, btitle, bdomain):
         if re.match('^http', val):
             f.write(val + "\n")
     f.close()
-    xpathextract.xpath(bname, burl, btitle)
+    xpathChk.xpath(bname, burl, btitle)
