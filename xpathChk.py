@@ -8,7 +8,7 @@ import requests
 import re
 import os
 import time
-from goose3 import Goose
+# from goose3 import Goose
 
 
 def xpath(name, prodUrl, title):
@@ -74,7 +74,7 @@ def xpath(name, prodUrl, title):
                 try:
                     flag = 0
                     prodUrls = set()
-                    print("sleep my child")
+                    print("sleeping for 2 sec")
                     time.sleep(2)
 
                     pageHolder = requests.get(url, headers=headers)
