@@ -5,8 +5,13 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from urllib.parse import unquote
 import re
+from googleapiclient import discovery
+from oauth2client.client import GoogleCredentials
 import xpathChk
 
+credentials = GoogleCredentials.get_application_default()
+
+service = discovery.build('storage', 'v1', credentials=credentials)
 
 def get_soup(link):
     """
@@ -63,9 +68,18 @@ def flowStart(bname, burl, btitle, bdomain):
                 urlSet.add(temUrl)
 
     allurlfilename = "allurls"
-    f = open(allurlfilename+".txt", "a")
+    f = open(allurlfilename+".txt", "w")
     for val in urlSet:
         substr = unquote(val)
         if re.match('^http', val):
             f.write(val + "\n")
     f.close()
+	
+    filename = 'allurls.txt'
+    bucket = 'trunkedfilestorage' 
+	
+    body = {'name': 'allurls.txt'}
+    req = service.objects().insert(bucket=bucket, body=body, media_body=filename)	
+    resp = req.execute()
+    
+    xpathChk.xpath(allurlfilename, burl, btitle, bname)
