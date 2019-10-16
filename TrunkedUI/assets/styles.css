@@ -309,6 +309,7 @@
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar
   }
+
   .gs-table-responsive-sm>.gs-table-bordered {
     border: 0
   }
@@ -322,6 +323,7 @@
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar
   }
+
   .gs-table-responsive-md>.gs-table-bordered {
     border: 0
   }
@@ -335,6 +337,7 @@
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar
   }
+
   .gs-table-responsive-lg>.gs-table-bordered {
     border: 0
   }
@@ -348,6 +351,7 @@
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: -ms-autohiding-scrollbar
   }
+
   .gs-table-responsive-xl>.gs-table-bordered {
     border: 0
   }

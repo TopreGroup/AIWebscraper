@@ -215,7 +215,11 @@ app.controller('MainCtrl', function ($scope, $timeout, $http) {
                                 dateParsing: true,
                                 processHtml: function (row, key) {
                                     if (key === 'producturl') {
-                                        return '<a href="' + row[key] + '" target="_blank">View product</a>'
+                                        if (row[key]) {
+                                            return '<a href="' + row[key] + '" target="_blank">View product</a>'
+                                        } else {
+                                            return "No Product URL"
+                                        }
                                     }
                                     return row[key]
                                 },
