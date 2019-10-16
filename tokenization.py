@@ -53,7 +53,7 @@ for d in soup.find_all("document"):
            temp = word_tokenize(withoutpunct)
            for token in temp:
                if token not in stop_words:
-                   tags.append((str(token).upper(),'0'))            
+                   tags.append((str(token),'0'))            
        else:
            temp = word_tokenize(wrd.text)
            for token in temp:
