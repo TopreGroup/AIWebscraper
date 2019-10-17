@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, render_template, flash, request, jsonify
 from wtforms import Form, TextField, TextAreaField
 from wtforms import validators, StringField, SubmitField
@@ -22,17 +24,17 @@ def trance():
             for uiobj in uiobjs:
                 if(uiobj["bname"] and uiobj["burl"] and uiobj["btitle"]):
                     try:
-                        parsed_uri = urlparse(uiobj["burl"])
-                        bdomain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-                        id.flowStart(uiobj["bname"], uiobj["burl"], uiobj["btitle"], bdomain)
                         conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
                         cur = conn.cursor()
                         postgres_insert_query = """SET ANSI_WARNINGS OFF; INSERT INTO BUSINESSES (business_name, business_url) \
-                        VALUES (?, ?); SET ANSI_WARNINGS ON; """
-                        record_to_insert = (uiobj["bname"], uiobj["burl"])
+                        VALUES (%s, %s); SET ANSI_WARNINGS ON; """
+                        parsed_uri = urlparse(uiobj["burl"])
+                        bdomain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+                        record_to_insert = (uiobj["bname"], bdomain)
                         cur.execute(postgres_insert_query, record_to_insert)
                         conn.commit()
                         conn.close()
+                        id.flowStart(uiobj["bname"], uiobj["burl"], uiobj["btitle"], bdomain)
                         return jsonify({'myModaladd': "myModaladd", 'modalMesage': "Extraction Job Completed"})
                     except:
                         print("except")
@@ -136,4 +138,4 @@ def keySearch():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=80, debug=True)

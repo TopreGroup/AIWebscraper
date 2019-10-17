@@ -65,4 +65,7 @@ def storeProdURL(name):
     for f in files:
         os.remove(f)
     
+    os.remove('allurls.txt')
+    os.remove('producturl.txt')
+    os.remove('working_product_urls.txt')
     print("flow complete.")
