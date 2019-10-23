@@ -259,128 +259,133 @@ app.controller('MainCtrl', function ($scope, $timeout, $http) {
 
     }
 
-    // $http.get(window.location.href + "viz")
-    // .then(function(response) {
-    //     console.log(response.data);
-
-    //     $timeout(function () {
-
-    //         $scope.options = {
-    //             chart: {
-    //                 type: 'pieChart',
-    //                 showLegend: true,
-    //                 labelType: function(d){
-    //                     var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
-    //                     return d3.format('.2%')(percent);
-    //                 },
-    //                 height: 500,
-    //                 x: function (d) {
-    //                     return d.key;
-    //                 },
-    //                 y: function (d) {
-    //                     return d.y;
-    //                 },
-    //                 showLabels: true,
-    //                 duration: 500,
-    //                 labelThreshold: 0.01,
-    //                 labelSunbeamLayout: true,
-    //                 legend: {
-    //                     margin: {
-    //                         top: 5,
-    //                         right: 35,
-    //                         bottom: 5,
-    //                         left: 0
-    //                     }
-    //                 }
-    //             }
-    //         };
-
-    //         $scope.data = [{
-    //                 key: "One",
-    //                 y: 5
-    //             },
-    //             {
-    //                 key: "Two",
-    //                 y: 2
-    //             },
-    //             {
-    //                 key: "Three",
-    //                 y: 9
-    //             },
-    //             {
-    //                 key: "Four",
-    //                 y: 7
-    //             },
-    //             {
-    //                 key: "Five",
-    //                 y: 4
-    //             },
-    //             {
-    //                 key: "Six",
-    //                 y: 3
-    //             },
-    //             {
-    //                 key: "Seven",
-    //                 y: .5
-    //             }
-    //         ];
-
-    //     }, 1);
-
-    //     $timeout(function () {
-
-    //         $scope.options2 = {
-    //             chart: {
-    //                 type: 'discreteBarChart',
-    //                 height: 450,
-    //                 showLegend: true,
-    //                 margin: {
-    //                     top: 20,
-    //                     right: 20,
-    //                     bottom: 50,
-    //                     left: 55
-    //                 },
-    //                 x: function (d) {
-    //                     return d.label;
-    //                 },
-    //                 y: function (d) {
-    //                     return d.value + (1e-10);
-    //                 },
-    //                 showValues: true,
-    //                 valueFormat: function (d) {
-    //                     return d3.format(',.4f')(d);
-    //                 },
-    //                 duration: 500,
-    //                 xAxis: {
-    //                     axisLabel: 'X Axis'
-    //                 },
-    //                 yAxis: {
-    //                     axisLabel: 'Y Axis',
-    //                     axisLabelDistance: -10
-    //                 }
-    //             }
-    //         };
-
-    //         $scope.data2 = [{
-    //             key: "Cumulative Return",
-    //             values: [{
-    //                     "label": "C",
-    //                     "value": 32.807804682612
-    //                 },
-    //                 {
-    //                     "label": "D",
-    //                     "value": 196.45946739256
-    //                 }
-    //             ]
-    //         }]
-    //     }, 1);
-
-    //     $timeout(function () {
-    //             window.dispatchEvent(new Event('resize'));
-    //     }, 100);
+    $http.get(window.location.href + "viz")
+        .then(function (response) {
 
 
-    // });
+
+            $scope.value = []
+            $scope.value2 = []
+
+
+            for (i in response.data.category) {
+
+                if (response.data.category[i][0] == "") {
+                    $scope.value.push({
+                        'label': "UNCATEGORIZED",
+                        'value': response.data.category[i][1]
+                    })
+                } else {
+
+                    $scope.value.push({
+                        'label': response.data.category[i][0],
+                        'value': response.data.category[i][1]
+                    })
+
+                }
+
+            }
+
+            $scope.value2 = Object.keys(response.data.entity).map(function (key) {
+                var newKey = (Object.keys(response.data.entity[key]))[0]
+                return [newKey, Math.round(response.data.entity[key][newKey][0])];
+            });
+            console.log($scope.value2);
+
+            $scope.value2Final = [];
+
+            for (i in $scope.value2) {
+
+                $scope.value2Final.push({
+                    'label': $scope.value2[i][0],
+                    'value': $scope.value2[i][1]
+                })
+
+            }
+
+            $scope.height = 700;
+            $scope.width = 1200;
+
+            console.log($scope.value2Final);
+
+            $timeout(function () {
+
+                $scope.options = {
+                    chart: {
+                        type: 'discreteBarChart',
+                        height: $scope.height, //750,
+                        width: $scope.width, //1300,
+                        showLegend: true,
+                        x: function (d) {
+                            return d.label;
+                        },
+                        y: function (d) {
+                            return d.value + (1e-10);
+                        },
+                        showValues: true,
+                        valueFormat: function (d) {
+                            return d3.format(',.1f')(d);
+                        },
+                        duration: 500,
+                        xAxis: {
+                            axisLabel: 'X Axis',
+                            rotateLabels: 45
+                        },
+                        yAxis: {
+                            axisLabel: 'Y Axis',
+                            axisLabelDistance: -10
+                        }
+                    }
+                };
+
+                $scope.data = [{
+                    key: "Cumulative Return",
+                    values: $scope.value
+                }]
+
+            }, 10);
+
+            $timeout(function () {
+
+                $scope.options2 = {
+                    chart: {
+                        type: 'multiBarHorizontalChart',
+                        height: 500,
+                        x: function(d){return d.label;},
+                        y: function(d){return d.value;},
+                        showValues: true,
+                        showControls: false,
+                        duration: 500,
+                        xAxis: {
+                            showMaxMin: true
+                        },
+                        yAxis: {
+                            axisLabel: 'Values',
+                            
+                        }
+                    }
+                };
+        
+                $scope.data2 = [
+                    {
+                        "values":$scope.value2Final 
+                    }
+                ]
+
+              
+            }, 10);
+
+            $timeout(function () {
+                window.dispatchEvent(new Event('resize'));
+                document.getElementsByClassName("nvd3-svg")[0].style.height = "811px";
+                document.getElementsByClassName("nvd3-svg")[0].style.width = "1350px";
+                window.dispatchEvent(new Event('resize'));
+                document.getElementsByClassName("nvd3-svg")[1].style.height = "811px";
+                document.getElementsByClassName("nvd3-svg")[1].style.width = "1350px";
+            }, 500);
+
+
+        });
 
 
 });
