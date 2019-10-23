@@ -1,1 +1,3 @@
-# AI Product Information Extraction
+# AI Product Information Extractor
+
+## Dependencies (Python)
