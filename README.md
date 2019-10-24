@@ -39,5 +39,5 @@ Execution of the java code contained within the **src** folder requires the foll
 
 The above jar files can be downloaded from the following link: https://drive.google.com/drive/folders/1kCyrHp7X9sWqdx9QnLN6Q6ssVFD1Ii8-?usp=sharing
 
-**Note:** After adding these jar files to the build path, the java code within the **src** folder must be converted into a jar file called **crf.jar** to allow for the integration with Python. 
+**Note:** After adding these jar files to the build path, the java code within the **src** folder must be converted into a jar file called **crf.jar** for integration with Python. 
 
