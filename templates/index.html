@@ -28,7 +28,7 @@
   <div ng-app='nvd3App'>
     <div ng-controller="MainCtrl" ng-init="showSearch=false">
 
-      <button type="button" data-toggle="modal" data-target="#myModaladd" style="display: none;" id="openadd"></button>
+      <button type="button" data-toggle="modal" data-target="#myModaladd" style="display: none;" id="openadd" ng-click="getViz()"></button>
 
 
 
@@ -42,7 +42,7 @@
               <p id="info"></p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="getViz()">Close</button>
             </div>
           </div>
         </div>

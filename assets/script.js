@@ -141,7 +141,11 @@ var app = angular.module('nvd3App', ['nvd3']);
 app.controller('MainCtrl', function ($scope, $timeout, $http) {
 
 
+
     $scope.subkey = function (subkeyword) {
+		
+		$scope.getViz();
+		
         if (document.getElementById("form2").checkValidity()) {
 
             $http({
@@ -259,6 +263,7 @@ app.controller('MainCtrl', function ($scope, $timeout, $http) {
 
     }
 
+	$scope.getViz = function(){
     $http.get(window.location.href + "viz")
         .then(function (response) {
 
@@ -271,10 +276,10 @@ app.controller('MainCtrl', function ($scope, $timeout, $http) {
             for (i in response.data.category) {
 
                 if (response.data.category[i][0] == "") {
-                    $scope.value.push({
-                        'label': "UNCATEGORIZED",
-                        'value': response.data.category[i][1]
-                    })
+                    //$scope.value.push({
+                      //  'label': "UNCATEGORIZED",
+                        //'value': response.data.category[i][1]
+                   // })
                 } else {
 
                     $scope.value.push({
@@ -386,6 +391,7 @@ app.controller('MainCtrl', function ($scope, $timeout, $http) {
 
 
         });
-
+}
+$scope.getViz();
 
 });

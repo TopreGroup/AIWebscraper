@@ -17,7 +17,7 @@ def storeProdURL(name):
 
     cur = conn.cursor()
     
-    bucket_name = "crfmodel"
+    bucket_name = "crfclassifier"
     client = storage.Client()
     bucket = client.get_bucket(bucket_name)
 
@@ -55,7 +55,7 @@ def storeProdURL(name):
     blob = bucket.blob("ner-model.ser.gz")
     blob.download_to_filename("ner-model.ser.gz")
     
-    subprocess.call(['/opt/java-jdk/jdk1.8.0_221/bin/java', '-jar', '/home/sanchitsh0211/AIWebscraper/crf.jar', "/home/sanchitsh0211/ner-model.ser.gz", "/home/sanchitsh0211/working_product_urls.txt"])
+    subprocess.call(['/opt/java-jdk/jdk1.8.0_221/bin/java', '-jar', '/home/adamkostarelas/AIProductExtraction/crf.jar', "/home/adamkostarelas/ner-model.ser.gz", "/home/adamkostarelas/working_product_urls.txt"])
     
     files = glob.glob('./extracted_data/*')
     for f in files:

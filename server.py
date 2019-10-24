@@ -7,6 +7,11 @@ import json
 import pytds
 from urllib.parse import urlparse
 import id
+from flask_socketio import SocketIO, emit
+from flask import url_for, copy_current_request_context
+from random import random
+from time import sleep
+from threading import Thread, Event
 
 DEBUG = True
 app = Flask(__name__, static_folder='assets')
@@ -87,54 +92,106 @@ def keySearch():
         return render_template('index.html')
 
 
-# @app.route("/viz", methods=['GET'])
-# def showViz():
-#     if request.method == 'GET':
-#         try:
-#             rowList = []
-#             conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
-#             cur = conn.cursor()
+@app.route("/viz", methods=['GET'])
+def showViz():
+    if request.method == 'GET':
+        try:
+            rowList = []
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
 
-#             selectQ = "SELECT DISTINCT category,  COUNT(  category ) AS Count FROM entities GROUP BY category"
-#             postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
+            selectQ = "SELECT DISTINCT category,  COUNT(  category ) AS Count FROM entities GROUP BY category"
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
 
-#             cur.execute(postgres_insert_query)
+            cur.execute(postgres_insert_query)
 
-#             for row in cur:
-#                 rowList.append(row)
-#             conn.commit()
-#             conn.close()
+            for row in cur:
+                rowList.append(row)
+            conn.commit()
+            conn.close()
 
-#             rowList2 = []
-#             conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
-#             cur = conn.cursor()
-# # """
+            rowList2 = []
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
 
-# # select CAST(count(brand) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as brand from ENTITIES where len(brand) >1 ;
-# # select CAST(count(model) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as model from ENTITIES where len(model) >1 ;
-# # select CAST(count(price) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as price from ENTITIES where len(price) >1 ;
-# # select CAST(count(stock) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as stock from ENTITIES where len(stock) >1 ;
-# # select CAST(count(condition) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as condition from ENTITIES where len(condition) >1 ;
-# # select CAST(count(category) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as category from ENTITIES where len(category) >1 ;
+            selectQ = "select CAST(count(brand) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as brand from ENTITIES where len(brand) >1 ;"
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
 
-# # """
+            cur.execute(postgres_insert_query)
 
-#             selectQ = "select count(brand)/count(*), count(model)/count(*), count(price)/count(*), count(stock)/count(*), count(producturl)/count(*), count(condition)/count(*), count(category)/count(*) from ENTITIES;"
-#             postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
+            for row in cur:
+                rowList2.append({"brand":row})
+            conn.commit()
+            conn.close()
 
-#             cur.execute(postgres_insert_query)
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
+            selectQ = "select CAST(count(model) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as model from ENTITIES where len(model) >1 ;"
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
 
-#             for row in cur:
-#                 rowList2.append(row)
-#             conn.commit()
-#             conn.close()
-#             return jsonify({'category': rowList, 'entity': rowList2})
-#         except:
-#             print("except")
-#             return jsonify({'myModaladd': "myModaladd", 'modalMesage': "Inernal Error"})
-#     else:
-#         print("outer else")
-#         return "error"
+            cur.execute(postgres_insert_query)
+
+            for row in cur:
+                rowList2.append({"model":row})
+            conn.commit()
+            conn.close()
+
+
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
+            selectQ = "select CAST(count(price) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as price from ENTITIES where len(price) >1 ; "
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
+
+            cur.execute(postgres_insert_query)
+
+            for row in cur:
+                rowList2.append({"price":row})
+            conn.commit()
+            conn.close()
+
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
+            selectQ = "select CAST(count(stock) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as stock from ENTITIES where len(stock) >1 ;"
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
+
+            cur.execute(postgres_insert_query)
+
+            for row in cur:
+                rowList2.append({"stock":row})
+            conn.commit()
+            conn.close()
+
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
+            selectQ = "select CAST(count(condition) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as condition from ENTITIES where len(condition) >1 ;"
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
+
+            cur.execute(postgres_insert_query)
+
+            for row in cur:
+                rowList2.append({"condition":row})
+            conn.commit()
+            conn.close()
+
+            conn = pytds.connect('devdb.trunked.com.au', 'trunkedproject', 'trunkedproject', 'rmitProject@trunked')
+            cur = conn.cursor()
+            selectQ = "select CAST(count(category) AS float)/CAST((select count(*) from ENTITIES) AS float)*100 as category from ENTITIES where len(category) >1 ;"
+            postgres_insert_query = "SET ANSI_WARNINGS OFF; " + selectQ + " SET ANSI_WARNINGS ON; "
+
+            cur.execute(postgres_insert_query)
+
+            for row in cur:
+                rowList2.append({"category":row})
+            conn.commit()
+            conn.close()
+
+            return jsonify({'category': rowList, 'entity': rowList2})
+        except:
+            print("except")
+            return jsonify({'myModaladd': "myModaladd", 'modalMesage': "Inernal Error"})
+    else:
+        print("outer else")
+        return "error"
 
 
 if __name__ == "__main__":
